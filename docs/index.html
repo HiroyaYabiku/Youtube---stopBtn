@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>YouTubeの一時停止ボタンをiframe外で制御する方法</title>
+<style media="screen">
+.youtube__closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+.youtube__closeBtn img {
+  width: 100%;
+}
+</style>
+  </head>
+  <body>
+
+    <div class="youtubeWrap">
+      <iframe class="video" id="popup-YouTube-player" width="560" height="315" src="https://www.youtube.com/embed/mh9IMIQmygE?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+      <div class="youtube__closeBtn"><img src="./img/close.png" alt=""></div>
+    </div>
+
+    <script src="./js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+    (function(){
+      var CloseTrigger = function(el){
+          var $video = $('.video-stream');
+          $(el).on('click', function() {
+            console.log('success')
+              videoControl("pauseVideo");
+          });
+          function videoControl(action){
+              var $playerWindow = $('#popup-YouTube-player')[0].contentWindow;
+              $playerWindow.postMessage('{"event":"command","func":"'+action+'","args":""}', '*');
+          }
+      };
+      var closeBtnClick = new CloseTrigger('.youtube__closeBtn');
+
+    })();
+
+    </script>
+  </body>
+</html>
